@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="sr-Latn">
+<head>
+  <!-- ======================================================
+       PROJEKAT 1: Lični portfolio sajt
+       Autor: Stanoje · Kurs "AI Graditelj" · Sedmica 1
+       Sve je u JEDNOM fajlu: HTML (struktura) + CSS (izgled)
+       + JavaScript (ponašanje). Komentari objašnjavaju svaki dio.
+       ====================================================== -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stanoje — AI Graditelj</title>
+  <style>
+    /* ---------- OSNOVNE BOJE I PODEŠAVANJA (CSS varijable) ----------
+       Promijeniš li boju ovdje, mijenja se na cijelom sajtu. */
+    :root {
+      --tamna: #0f172a;      /* pozadina */
+      --tamnija: #1e293b;    /* kartice */
+      --tekst: #e2e8f0;      /* glavni tekst */
+      --sivi: #94a3b8;       /* sporedni tekst */
+      --akcent: #22c55e;     /* zelena — naglasci */
+      --zelena: #34d399;     /* završeni projekti */
+      --narandzasta: #fbbf24;/* projekat u toku */
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; } /* glatko skrolovanje na klik u meniju */
+    body {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: var(--tamna);
+      color: var(--tekst);
+      line-height: 1.6;
+    }
+    .kontejner { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+
+    /* ---------- NAVIGACIJA ---------- */
+    nav {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #243049;
+    }
+    nav .kontejner { display: flex; justify-content: space-between; align-items: center; height: 60px; }
+    nav .logo { font-weight: bold; color: var(--akcent); font-size: 1.1rem; }
+    nav a { color: var(--sivi); text-decoration: none; margin-left: 22px; font-size: 0.95rem; }
+    nav a:hover { color: var(--akcent); }
+
+    /* ---------- HERO (uvodni blok) ---------- */
+    .hero { padding: 90px 0 70px 0; }
+    .hero .pozdrav { color: var(--akcent); font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; }
+    .hero h1 { font-size: 2.8rem; margin: 10px 0; }
+    .hero p.slogan { font-size: 1.25rem; color: var(--sivi); max-width: 640px; }
+    .hero .dugmad { margin-top: 28px; }
+    .dugme {
+      display: inline-block; padding: 12px 26px; border-radius: 8px;
+      text-decoration: none; font-weight: 600; margin-right: 12px; margin-top: 8px;
+    }
+    .dugme.puno { background: var(--akcent); color: #06283d; }
+    .dugme.puno:hover { background: #7dd3fc; }
+    .dugme.prazno { border: 1.5px solid var(--akcent); color: var(--akcent); }
+    .dugme.prazno:hover { background: rgba(56, 189, 248, 0.1); }
+
+    /* ---------- TRAKA NAPRETKA KURSA ---------- */
+    .napredak { background: var(--tamnija); border-radius: 12px; padding: 20px 24px; margin-top: 40px; }
+    .napredak .red { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--sivi); margin-bottom: 8px; }
+    .traka { background: #0b1120; border-radius: 20px; height: 14px; overflow: hidden; }
+    .traka .punjenje {
+      height: 100%; border-radius: 20px; width: 0;
+      background: linear-gradient(90deg, var(--akcent), var(--zelena));
+      transition: width 1.2s ease; /* animacija punjenja */
+    }
+
+    /* ---------- SEKCIJE ---------- */
+    section { padding: 60px 0; border-top: 1px solid #1c2740; }
+    section h2 { font-size: 1.7rem; margin-bottom: 8px; }
+    section h2 span { color: var(--akcent); }
+    section p.opis { color: var(--sivi); margin-bottom: 28px; }
+
+    /* ---------- PROJEKTI (mreža kartica) ---------- */
+    .mreza { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+    .kartica {
+      background: var(--tamnija); border: 1px solid #2b3a5c; border-radius: 12px;
+      padding: 20px; transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .kartica:hover { transform: translateY(-3px); border-color: var(--akcent); }
+    .kartica .status { font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    .status.zavrsen { color: var(--zelena); }
+    .status.utoku { color: var(--narandzasta); }
+    .status.uskoro { color: var(--sivi); }
+    .kartica h3 { margin: 8px 0 6px 0; font-size: 1.05rem; }
+    .kartica p { font-size: 0.9rem; color: var(--sivi); }
+    .kartica.zakljucana { opacity: 0.55; }
+    .kartica a.link { color: var(--akcent); font-size: 0.9rem; text-decoration: none; }
+
+    /* ---------- DNEVNIK UČENJA ---------- */
+    .zapis {
+      background: var(--tamnija); border-left: 4px solid var(--akcent);
+      border-radius: 0 10px 10px 0; padding: 18px 22px; margin-bottom: 16px;
+    }
+    .zapis .datum { color: var(--akcent); font-size: 0.85rem; font-weight: 600; }
+    .zapis h3 { margin: 4px 0 6px 0; font-size: 1.05rem; }
+    .zapis p { color: var(--sivi); font-size: 0.95rem; }
+
+    /* ---------- KONTAKT I PODNOŽJE ---------- */
+    .kontakt-red { display: flex; gap: 14px; flex-wrap: wrap; }
+    footer { border-top: 1px solid #1c2740; padding: 30px 0; text-align: center; color: var(--sivi); font-size: 0.85rem; }
+
+    /* ---------- PRILAGOĐAVANJE ZA TELEFON ---------- */
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2rem; }
+      nav a { margin-left: 12px; font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ NAVIGACIJA ============ -->
+  <nav>
+    <div class="kontejner">
+      <div class="logo">&lt;Stanoje /&gt;</div>
+      <div>
+        <a href="#projekti">Projekti</a>
+        <a href="#dnevnik">Dnevnik</a>
+        <a href="#kontakt">Kontakt</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div class="kontejner">
+      <div class="pozdrav">Zdravo, ja sam</div>
+      <h1>Stanoje.</h1>
+      <p class="slogan">
+        Sa 52 godine krenuo sam na 6-mjesečno intenzivno putovanje: gradim aplikacije,
+        AI agente i automatizacije — <strong>15+ projekata za 26 sedmica</strong>.
+        Ovaj sajt je projekat broj 1. Sve što napravim, ovdje će stanovati.
+      </p>
+      <div class="dugmad">
+        <a class="dugme puno" href="#projekti">Pogledaj projekte</a>
+        <a class="dugme prazno" href="#dnevnik">Prati moj napredak</a>
+      </div>
+
+      <!-- Traka napretka: JavaScript dolje računa procenat po datumu -->
+      <div class="napredak">
+        <div class="red">
+          <span>Kurs „AI Graditelj"</span>
+          <span id="napredak-tekst">Sedmica 1 od 26</span>
+        </div>
+        <div class="traka"><div class="punjenje" id="napredak-traka"></div></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ PROJEKTI ============ -->
+  <section id="projekti">
+    <div class="kontejner">
+      <h2><span>01.</span> Projekti</h2>
+      <p class="opis">Svaki završeni projekat kursa dobija svoju karticu. Sive kartice su ono što tek dolazi — i to je najljepši dio.</p>
+      <div class="mreza">
+
+        <div class="kartica">
+          <div class="status utoku">● U toku</div>
+          <h3>Portfolio sajt</h3>
+          <p>Ovaj sajt — projekat broj 1. HTML, CSS i JavaScript u jednom fajlu, objavljen na internetu.</p>
+        </div>
+
+        <div class="kartica zakljucana">
+          <div class="status uskoro">○ Sedmica 2</div>
+          <h3>Lični komandni centar</h3>
+          <p>Zadaci, navike i statistika kursa — aplikacija koju ću koristiti svaki dan.</p>
+        </div>
+
+        <div class="kartica zakljucana">
+          <div class="status uskoro">○ Sedmica 3</div>
+          <h3>Kviz igra</h3>
+          <p>Igra za prijatelje i porodicu — prvi „demo dan".</p>
+        </div>
+
+        <div class="kartica zakljucana">
+          <div class="status uskoro">○ Mjesec 2</div>
+          <h3>Aplikacija sa bazom i korisnicima</h3>
+          <p>Prvi pravi proizvod: prijava, baza podataka, živi link.</p>
+        </div>
+
+        <div class="kartica zakljucana">
+          <div class="status uskoro">○ Mjesec 3</div>
+          <h3>AI aplikacije ×3</h3>
+          <p>Chat, analizator dokumenata i RAG — „razgovaraj sa svojim dokumentima".</p>
+        </div>
+
+        <div class="kartica zakljucana">
+          <div class="status uskoro">○ Mjesec 4</div>
+          <h3>Agenti i moj MCP server</h3>
+          <p>Sistemi koji rade dok spavam: sakupljač sadržaja, agent-istraživač, MCP server.</p>
+        </div>
+
+        <div class="kartica zakljucana">
+          <div class="status uskoro">○ Mjesec 5</div>
+          <h3>TikTok mašina</h3>
+          <p>Automatizovana proizvodnja i objava videa: ideja → scenario → glas → video → objava.</p>
+        </div>
+
+        <div class="kartica zakljucana">
+          <div class="status uskoro">○ Mjesec 6</div>
+          <h3>Mobilna aplikacija + završni projekat</h3>
+          <p>Aplikacija na mom telefonu i veliko finale koje spaja sve naučeno.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DNEVNIK UČENJA ============ -->
+  <section id="dnevnik">
+    <div class="kontejner">
+      <h2><span>02.</span> Dnevnik učenja</h2>
+      <p class="opis">Sedmica po sedmica — šta sam naučio, šta me iznenadilo, šta slijedi. Najnoviji zapis je na vrhu.</p>
+
+      <!-- Novi zapis dodaješ tako što kopiraš jedan ovakav blok iznad ostalih -->
+      <div class="zapis">
+        <div class="datum">Sedmica 1 · jul 2026</div>
+        <h3>Okruženje spremno, prvi problem riješen</h3>
+        <p>
+          Instalirao sam kompletno okruženje i riješio prvi problem sa PowerShell execution policy.
+        </p>
+      </div>
+
+      <div class="zapis">
+        <div class="datum">Sedmica 1 · jul 2026</div>
+        <h3>Početak: prvi sajt istog dana</h3>
+        <p>
+          Kurs je počeo. Umjesto teorije — odmah gradnja: ovaj sajt je nastao prvog dana,
+          u saradnji sa Claudeom. Sljedeći koraci: instalacija alata (VS Code, Node.js, Git,
+          Claude Code), GitHub i Vercel nalozi, pa objava sajta na živi link.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ KONTAKT ============ -->
+  <section id="kontakt">
+    <div class="kontejner">
+      <h2><span>03.</span> Kontakt</h2>
+      <p class="opis">Pratite putovanje ili se javite:</p>
+      <div class="kontakt-red">
+        <a class="dugme prazno" href="mailto:sknest@gmail.com">✉ sknest@gmail.com</a>
+        <!-- Kad napraviš naloge, samo zamijeni # pravim linkovima: -->
+        <a class="dugme prazno" href="#" title="uskoro">GitHub (uskoro)</a>
+        <a class="dugme prazno" href="#" title="uskoro">TikTok (uskoro)</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Napravljeno u Sedmici 1 kursa „AI Graditelj" · Stanoje © 2026
+  </footer>
+
+  <script>
+    /* ---------- JAVASCRIPT: traka napretka kursa ----------
+       Računa koliko je sedmica prošlo od početka kursa
+       i puni traku odgovarajućim procentom. */
+
+    const POCETAK_KURSA = new Date("2026-07-06"); // datum početka
+    const UKUPNO_SEDMICA = 26;
+
+    const danas = new Date();
+    const proslo_ms = danas - POCETAK_KURSA;                        // razlika u milisekundama
+    const proslo_sedmica = Math.max(1, Math.ceil(proslo_ms / (7 * 24 * 60 * 60 * 1000)));
+    const sedmica = Math.min(proslo_sedmica, UKUPNO_SEDMICA);       // ne preko 26
+    const procenat = Math.round((sedmica / UKUPNO_SEDMICA) * 100);
+
+    document.getElementById("napredak-tekst").textContent =
+      "Sedmica " + sedmica + " od " + UKUPNO_SEDMICA;
+
+    // Mali trik: sačekamo 0,3 s pa postavimo širinu — tako se vidi animacija punjenja
+    setTimeout(() => {
+      document.getElementById("napredak-traka").style.width = procenat + "%";
+    }, 300);
+  </script>
+</body>
+</html>
