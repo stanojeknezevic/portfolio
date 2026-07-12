@@ -89,7 +89,8 @@
     .kartica h3 { margin: 8px 0 6px 0; font-size: 1.05rem; }
     .kartica p { font-size: 0.9rem; color: var(--sivi); }
     .kartica.zakljucana { opacity: 0.55; }
-    .kartica a.link { color: var(--akcent); font-size: 0.9rem; text-decoration: none; }
+    .kartica a.link { display: inline-block; margin-top: 10px; color: var(--akcent); font-size: 0.9rem; text-decoration: none; }
+    .kartica a.link:hover { text-decoration: underline; }
 
     /* ---------- DNEVNIK UČENJA ---------- */
     .zapis {
@@ -164,10 +165,11 @@
           <p>Ovaj sajt — projekat broj 1. HTML, CSS i JavaScript u jednom fajlu, objavljen na internetu.</p>
         </div>
 
-        <div class="kartica zakljucana">
-          <div class="status uskoro">○ Sedmica 2</div>
+        <div class="kartica">
+          <div class="status zavrsen">● Sedmica 2 — završeno</div>
           <h3>Lični komandni centar</h3>
-          <p>Zadaci, navike i statistika kursa — aplikacija koju ću koristiti svaki dan.</p>
+          <p>Zadaci, navike i statistika kursa — aplikacija koju koristim svaki dan.</p>
+          <a class="link" href="https://projekat-02-komandni-centar.vercel.app" target="_blank" rel="noopener">Pogledaj uživo →</a>
         </div>
 
         <div class="kartica zakljucana">
@@ -217,6 +219,16 @@
       <p class="opis">Sedmica po sedmica — šta sam naučio, šta me iznenadilo, šta slijedi. Najnoviji zapis je na vrhu.</p>
 
       <!-- Novi zapis dodaješ tako što kopiraš jedan ovakav blok iznad ostalih -->
+      <div class="zapis">
+        <div class="datum">Sedmica 2 · 12. jul 2026</div>
+        <h3>Projekat 2 gotov: Lični komandni centar</h3>
+        <p>
+          Napravio sam aplikaciju za zadatke, navike i statistiku kursa — sve u jednom HTML fajlu,
+          sa čuvanjem podataka u localStorage. Kod je na GitHub-u i povezan sa Vercel-om, pa se
+          svaki push automatski objavljuje na živi link.
+        </p>
+      </div>
+
       <div class="zapis">
         <div class="datum">Sedmica 1 · jul 2026</div>
         <h3>Okruženje spremno, prvi problem riješen</h3>
